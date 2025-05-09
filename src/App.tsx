@@ -1,10 +1,15 @@
+import { OrderTable } from "./features/orders/components/Ordertable";
+
 function App() {
   return (
-    <div className="flex flex-row items-center justify-center min-h-svh">
-      <h1 className="text-3xl font-bold  text-red-600">
-        Zellerfeld Order Dashboard
-      </h1>
-    </div>
+    <>
+      <div className="min-h-screen bg-white text-black">
+        <h1 className="text-2xl font-semibold p-4 text-center">
+          Zellerfeld Orders
+        </h1>
+        <OrderTable />
+      </div>
+    </>
   );
 }
 
