@@ -5,6 +5,8 @@ import { OrderStatus } from "@/types/enums/OrderStatusEnum";
 import { LockReason } from "@/types/enums/LockReasonEnum";
 import { ModelDesigner } from "@/types/enums/ModelDesignerEnum";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 interface OrderTableProps {
   orders: Order[];
@@ -133,40 +135,72 @@ const renderCellContent = (order: Order, columnKey: string) => {
 };
 
 const OrderTable = memo(({ orders }: OrderTableProps) => {
+  const [expandedOid, setExpandedOid] = useState<string | null>(null);
+
+  const handleToggle = (oid: string) => {
+    setExpandedOid((prev) => (prev === oid ? null : oid));
+  };
   return (
     <div className="w-full overflow-x-auto relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-4 after:bg-gradient-to-l after:from-white after:to-transparent">
       <Table className="min-w-[800px] w-full">
         <TableBody>
-          {orders.map((order) => (
-            <TableRow
-              key={order.oid}
-              className="flex gap-x-2 px-4 border-t border-b border-gray-400 hover:bg-gray-300"
-            >
-              {columns.map((column) => (
-                <TableCell
-                  key={column.key}
-                  className={`bg-white px-1 sm:px-2 py-2 ${column.basis}`}
-                >
-                  {column.key === "status" ? (
-                    renderCellContent(order, column.key)
-                  ) : (
-                    <div className="h-12 bg-gray-100 shadow-sm flex items-center justify-center p-2 text-center text-sm sm:text-base sm:p-3">
+          {orders.map((order) => {
+            const isExpanded = expandedOid === String(order.oid);
+
+            return (
+              <TableRow
+                key={order.oid}
+                className="flex gap-x-2 px-4 border-t border-b border-gray-400"
+              >
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.key}
+                    className={cn(`bg-white px-1 sm:px-2 py-2 ${column.basis}`)}
+                  >
+                    {column.key === "status" ? (
+                      renderCellContent(order, column.key)
+                    ) : column.key === "oid" ? (
                       <div
                         className={cn(
-                          "text-sm break-words leading-tight",
-                          ["oid", "type", "daysSinceOrder"].includes(column.key)
-                            ? "font-semibold text-lg"
-                            : ""
+                          "h-12 shadow-sm flex items-center justify-between p-2 text-sm sm:text-base",
+                          isExpanded ? "bg-blue-200" : "bg-gray-100"
                         )}
                       >
-                        {renderCellContent(order, column.key)}
+                        <span className="font-semibold text-lg">
+                          {order.oid}
+                        </span>
+                        <button
+                          onClick={() => handleToggle(String(order.oid))}
+                          className="ml-2 text-gray-600 hover:text-black"
+                        >
+                          {isExpanded ? (
+                            <ChevronDown className="w-4 h-4" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4" />
+                          )}
+                        </button>
                       </div>
-                    </div>
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
+                    ) : (
+                      <div className="h-12 bg-gray-100 shadow-sm flex items-center justify-center p-2 text-center text-sm sm:text-base sm:p-3">
+                        <div
+                          className={cn(
+                            "text-sm break-words leading-tight",
+                            ["oid", "type", "daysSinceOrder"].includes(
+                              column.key
+                            )
+                              ? "font-semibold text-lg"
+                              : ""
+                          )}
+                        >
+                          {renderCellContent(order, column.key)}
+                        </div>
+                      </div>
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
