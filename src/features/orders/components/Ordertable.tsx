@@ -4,14 +4,7 @@ import { Order } from "@/types/order";
 import { OrderStatus } from "@/types/enums/OrderStatusEnum";
 import { LockReason } from "@/types/enums/LockReasonEnum";
 import { ModelDesigner } from "@/types/enums/ModelDesignerEnum";
-import {
-  Table,
-  TableHead,
-  TableHeader,
-  TableBody,
-  TableCell,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 interface OrderTableProps {
   orders: Order[];
@@ -143,19 +136,6 @@ const OrderTable = memo(({ orders }: OrderTableProps) => {
   return (
     <div className="w-full overflow-x-auto relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-4 after:bg-gradient-to-l after:from-white after:to-transparent">
       <Table className="min-w-[800px] w-full">
-        <TableHeader>
-          <TableRow className="flex gap-x-2 px-4">
-            {columns.map((column) => (
-              <TableHead
-                key={column.key}
-                className={`text-white font-bold text-sm text-center bg-black shadow-sm border border-gray-700 py-2 rounded-md ${column.basis}`}
-              >
-                {column.label}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-
         <TableBody>
           {orders.map((order) => (
             <TableRow
