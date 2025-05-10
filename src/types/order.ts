@@ -6,7 +6,7 @@ export interface Order {
   oid: number;
   statusLeft: OrderStatus;
   statusRight: OrderStatus;
-  status?: OrderStatus;
+  status: OrderStatus | "";
   type: OrderType;
   lock: LockReason | "" | null;
   customer: string;

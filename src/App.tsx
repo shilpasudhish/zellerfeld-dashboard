@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <div className="min-h-screen bg-white text-black">
-        <h1 className="text-2xl font-bold p-4 text-left">
+        <h1 className="text-xl font-semibold p-4 text-left">
           Zellerfeld Order Dashboard
         </h1>
         <OrderDashboard />

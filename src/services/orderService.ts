@@ -1,7 +1,7 @@
 import { dummyOrders } from "../assets/data.ts";
 import type { Order } from "../types/order";
 import { OrderStatus } from "../types/enums/OrderStatusEnum";
-
+import { SortState } from "@/types/SortState.ts";
 const STATUS_PRECEDENCE: OrderStatus[] = [
   OrderStatus.Delivered,
   OrderStatus.ReadyForPackaging,
@@ -15,10 +15,32 @@ export class OrderService {
   private orderList: Order[] = this.getCompleteOrders();
   constructor() {}
 
-  public async getOrders(): Promise<Order[]> {
+  public async getOrders(sortOrder: SortState): Promise<Order[]> {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log("Fetching orders...", dummyOrders);
-    return this.orderList;
+    const { field, direction } = sortOrder;
+    return [...this.orderList].sort((a, b) => {
+      let valueA = a[field];
+      let valueB = b[field];
+      //Handle status field special case
+
+      // Handle lock field special case
+      if (field === "lock") {
+        valueA = valueA || "None";
+        valueB = valueB || "None";
+      }
+
+      // Handle different types
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        return direction === "asc" ? valueA - valueB : valueB - valueA;
+      }
+
+      // Convert to string for comparison (handles enums and strings)
+      const strA = String(valueA);
+      const strB = String(valueB);
+      return direction === "asc"
+        ? strA.localeCompare(strB)
+        : strB.localeCompare(strA);
+    });
   }
 
   private getCompleteOrders(): Order[] {
@@ -36,9 +58,12 @@ export class OrderService {
       console.warn("Unknown status value", order.statusLeft, order.statusRight);
       return OrderStatus.OpenOrder;
     }
+    if (order.statusLeft === order.statusRight) {
+      return order.statusLeft;
+    }
     const leftIndex = STATUS_PRECEDENCE.indexOf(order.statusLeft);
     const rightIndex = STATUS_PRECEDENCE.indexOf(order.statusRight);
-    return leftIndex >= rightIndex
+    return leftIndex > rightIndex
       ? order.statusLeft
       : order.statusRight || OrderStatus.OpenOrder;
   }
