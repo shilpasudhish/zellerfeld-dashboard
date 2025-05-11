@@ -2,6 +2,9 @@ import { dummyOrders } from "../assets/data.ts";
 import type { Order } from "../types/order";
 import { OrderStatus } from "../types/enums/OrderStatusEnum";
 import { SortState } from "@/types/SortState.ts";
+import { FilterState } from "@/types/FilterState.ts";
+import { LockReason } from "@/types/enums/LockReasonEnum";
+
 const STATUS_PRECEDENCE: OrderStatus[] = [
   OrderStatus.Delivered,
   OrderStatus.ReadyForPackaging,
@@ -15,10 +18,73 @@ export class OrderService {
   private orderList: Order[] = this.getCompleteOrders();
   constructor() {}
 
-  public async getOrders(sortOrder: SortState): Promise<Order[]> {
+  public async getOrders(
+    sortOrder: SortState,
+    filterState: FilterState
+  ): Promise<Order[]> {
     await new Promise((resolve) => setTimeout(resolve, 500));
     const { field, direction } = sortOrder;
-    return [...this.orderList].sort((a, b) => {
+    const {
+      orderId,
+      status,
+      type,
+      lock,
+      designer,
+      customer,
+      model,
+      daysSinceOrder,
+    } = filterState;
+
+    let filteredOrders = this.orderList;
+
+    if (orderId.length > 0) {
+      filteredOrders = filteredOrders.filter((order) =>
+        String(order.oid).includes(orderId)
+      );
+    }
+
+    if (customer.length > 0) {
+      filteredOrders = filteredOrders.filter((order) =>
+        order.customer.toLowerCase().includes(customer.toLowerCase())
+      );
+    }
+
+    if (status.length > 0) {
+      filteredOrders = filteredOrders.filter((order) =>
+        status.includes(order.status as OrderStatus)
+      );
+    }
+
+    if (type.length > 0) {
+      filteredOrders = filteredOrders.filter((order) =>
+        type.includes(order.type)
+      );
+    }
+
+    if (lock.length > 0) {
+      filteredOrders = filteredOrders.filter((order) =>
+        lock.includes(order.lock as LockReason)
+      );
+    }
+
+    if (designer.length > 0) {
+      filteredOrders = filteredOrders.filter((order) =>
+        designer.includes(order.designer)
+      );
+    }
+
+    if (model.length > 0) {
+      filteredOrders = filteredOrders.filter((order) =>
+        model.includes(order.model)
+      );
+    }
+
+    if (Number(daysSinceOrder) > 0) {
+      filteredOrders = filteredOrders.filter(
+        (order) => order.daysSinceOrder <= Number(daysSinceOrder)
+      );
+    }
+    return [...filteredOrders].sort((a, b) => {
       let valueA = a[field];
       let valueB = b[field];
       //Handle status field special case

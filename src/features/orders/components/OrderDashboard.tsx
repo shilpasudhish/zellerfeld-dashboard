@@ -4,14 +4,29 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import OrderTable from "../components/OrderTable";
 import SortControl from "./SortControl";
-
+import { FilterState } from "../../../types/FilterState";
+import FilterControl from "./FilterControl";
 const OrderDashboard = () => {
   const [sortOrder, setSortOrder] = useState<SortState>({
     field: "oid",
     direction: "asc",
   });
+  const [filterOrder, setFilterOrder] = useState<FilterState>({
+    orderId: "",
+    status: [],
+    type: [],
+    lock: [],
+    customer: "",
+    designer: [],
+    model: [],
+    daysSinceOrder: "",
+  });
 
-  const { data: orders, isLoading, isError } = useOrders(sortOrder);
+  const {
+    data: orders,
+    isLoading,
+    isError,
+  } = useOrders(sortOrder, filterOrder);
   console.log("Fetched orders:", orders);
 
   if (isLoading) return <div className="text-center p-4">Loading...</div>;
@@ -25,6 +40,12 @@ const OrderDashboard = () => {
       <Card className="w-full border-2 border-black rounded-md">
         <CardContent>
           <SortControl sortState={sortOrder} setSortState={setSortOrder} />
+          <FilterControl
+            filterState={filterOrder}
+            updateFilterState={(filterState: FilterState) =>
+              setFilterOrder(filterState)
+            }
+          />
           <OrderTable orders={orders ?? []} />
         </CardContent>
       </Card>
