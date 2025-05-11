@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { cn } from "@/lib/utils";
 import { Order } from "@/types/order";
 import { OrderStatus } from "@/types/enums/OrderStatusEnum";
@@ -119,7 +118,7 @@ const renderCellContent = (order: Order, columnField: string) => {
   }
 };
 
-const OrderTable = memo(({ orders }: OrderTableProps) => {
+const OrderTable = ({ orders }: OrderTableProps) => {
   const [expandedOid, setExpandedOid] = useState<string | null>(null);
 
   const handleToggle = (oid: string) => {
@@ -190,7 +189,7 @@ const OrderTable = memo(({ orders }: OrderTableProps) => {
       </TableBody>
     </Table>
   );
-});
+};
 
 OrderTable.displayName = "OrderTable";
 

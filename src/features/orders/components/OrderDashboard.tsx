@@ -1,5 +1,6 @@
-import { useOrders } from "../hooks/useOrders";
-import type { SortState } from "@/types/SortState";
+import { useQuery } from "@tanstack/react-query";
+import { Order } from "@/types/order";
+import { SortState } from "@/types/SortState";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import OrderTable from "../components/OrderTable";
@@ -7,7 +8,7 @@ import SortControl from "./SortControl";
 import { FilterState } from "../../../types/FilterState";
 import FilterControl from "./FilterControl";
 import "./OrderDashboard.module.css";
-
+import orderService from "@/services/orderService";
 const OrderDashboard = () => {
   const [sortOrder, setSortOrder] = useState<SortState>({
     field: "oid",
@@ -24,12 +25,10 @@ const OrderDashboard = () => {
     daysSinceOrder: [],
   });
 
-  const {
-    data: orders,
-    isLoading,
-    isError,
-  } = useOrders(sortOrder, filterOrder);
-  console.log("Fetched orders:", orders);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["todos", sortOrder, filterOrder],
+    queryFn: () => orderService.getOrders(sortOrder, filterOrder),
+  });
 
   if (isLoading) return <div className="text-center p-4">Loading...</div>;
   if (isError)
@@ -43,14 +42,18 @@ const OrderDashboard = () => {
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <div className="min-w-max">
-              <SortControl sortState={sortOrder} setSortState={setSortOrder} />
+              <SortControl
+                sortState={sortOrder}
+                setSortState={(sortState: SortState) => setSortOrder(sortState)}
+              />
               <FilterControl
                 filterState={filterOrder}
                 updateFilterState={(filterState: FilterState) =>
                   setFilterOrder(filterState)
                 }
               />
-              <OrderTable orders={orders ?? []} />
+
+              <OrderTable orders={data as Order[]} />
             </div>
           </div>
         </CardContent>

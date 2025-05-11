@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import type { Order } from "@/types/order";
 import type { SortState } from "@/types/SortState";
 import { ChevronUp, ChevronDown } from "lucide-react";
-import { useState } from "react";
 
 // Define each column with its label, field key, and basis for consistent alignment
 export const columns: { label: string; field: keyof Order; basis: string }[] = [
@@ -34,22 +33,20 @@ type SortControlProps = {
 };
 
 const SortControl = ({ sortState, setSortState }: SortControlProps) => {
-  const [sortOrder, setSortOrder] = useState<SortState>(sortState);
-
   const handleSort = (field: keyof Order) => {
     let dir: "asc" | "desc" = "asc";
     if (sortState.field === field) {
       dir = sortState.direction === "asc" ? "desc" : "asc";
     }
-    const newSort = { field, direction: dir };
-    setSortOrder(newSort);
-    setSortState(newSort);
+    setSortState({ field, direction: dir });
   };
 
   return (
     <div className="flex gap-x-2 px-4">
       {columns.map(({ label, field, basis }) => {
-        const isActive = sortOrder.field === field;
+        const isActive = sortState.field === field;
+        const direction = sortState.direction;
+
         return (
           <div
             key={field}
@@ -57,14 +54,14 @@ const SortControl = ({ sortState, setSortState }: SortControlProps) => {
           >
             <span className="mr-1 truncate">{label}</span>
             <Button
-              variant="secondary"
+              variant="ghost"
               size="icon"
-              className={`h-8 w-8 p-0 text-black ${
+              className={`h-8 w-8 p-0 text-white ${
                 isActive ? "opacity-100" : "opacity-50"
               }`}
               onClick={() => handleSort(field)}
             >
-              {isActive && sortOrder.direction === "asc" ? (
+              {isActive && direction === "asc" ? (
                 <ChevronUp className="h-5 w-5" />
               ) : (
                 <ChevronDown className="h-5 w-5" />

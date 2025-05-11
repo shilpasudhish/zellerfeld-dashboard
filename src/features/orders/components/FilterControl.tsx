@@ -5,9 +5,10 @@ import { LockReason } from "../../../types/enums/LockReasonEnum";
 import { OrderStatus } from "../../../types/enums/OrderStatusEnum";
 import { ModelDesigner } from "../../../types/enums/ModelDesignerEnum";
 import { OrderType } from "../../../types/enums/OrderTypeEnum";
-import type { FilterState } from "../../../types/FilterState";
+import { FilterState } from "../../../types/FilterState";
 import { useEffect, useState } from "react";
 import { columns } from "./SortControl";
+import { cn } from "@/lib/utils";
 
 type FilterControlProps = {
   filterState: FilterState;
@@ -47,15 +48,20 @@ const FilterInput = ({
   basis = "basis-[11.5%]",
 }: any) => (
   <div className={`flex flex-col ${basis} min-w-[120px]`}>
-    <div className="w-full h-full border border-gray-300 rounded-md flex flex-col">
+    <div className="w-full h-full border border-gray-500 rounded-md flex flex-col">
       <Input
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full p-2"
+        className="w-full p-2 border-0 border-b border-gray-500 rounded-none focus:outline-none focus:ring-0 focus-visible:ring-0"
       />
-      <div className="mt-auto flex justify-end">
-        <Button variant="ghost" onClick={onClear}>
+      <div className="mt-auto flex justify-end p-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="rounded-full px-3 py-1 text-sm"
+          onClick={onClear}
+        >
           Clear
         </Button>
       </div>
@@ -73,28 +79,44 @@ const FilterToggleGroup = ({
   type = "multiple",
 }: any) => (
   <div className={`flex flex-col items-start ${basis}`}>
-    <div className="w-full border border-gray-300 rounded-md">
-      <div className="h-32 overflow-y-auto w-full">
+    <div className="w-full border border-gray-500 rounded-md">
+      <div className="h-32 overflow-y-auto w-full pr-1">
         <ToggleGroup
-          className="grid gap-1"
+          className="flex flex-col gap-1 w-[calc(100%-4px)] pr-1 pl-1"
           type={type}
           value={value}
           onValueChange={onValueChange}
         >
           {Object.keys(labelMap).map((key) => (
-            <ToggleGroupItem key={key} value={key}>
+            <ToggleGroupItem
+              key={key}
+              value={key}
+              className={cn(
+                "block w-full text-left p-2 text-sm font-normal border-b border-gray-500 last:border-b-0 first:rounded-none last:rounded-none transition-colors duration-200 data-[state=on]:bg-blue-200 data-[state=on]:text-blue-900 data-[state=off]:bg-white data-[state=off]:hover:bg-gray-100"
+              )}
+            >
               {labelMap[key]}
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
       </div>
-      <div className="flex justify-between mt-2">
+      <div className="flex justify-between mt-2 px-2 py-4 gap-2">
         {selectAll && (
-          <Button variant="ghost" onClick={selectAll}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-full px-3 py-1 text-sm"
+            onClick={selectAll}
+          >
             Select All
           </Button>
         )}
-        <Button variant="ghost" onClick={onClear}>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="rounded-full px-3 py-1 text-sm"
+          onClick={onClear}
+        >
           Clear
         </Button>
       </div>
@@ -135,7 +157,7 @@ const FilterControl = ({
   const handleSearchChange = (setter: any) => (value: string) => setter(value);
 
   return (
-    <div className="my-2">
+    <div className="my-2 mb-10">
       <div className="flex gap-x-2 px-4">
         <FilterInput
           placeholder="Order ID"
