@@ -6,6 +6,8 @@ import OrderTable from "../components/OrderTable";
 import SortControl from "./SortControl";
 import { FilterState } from "../../../types/FilterState";
 import FilterControl from "./FilterControl";
+import "./OrderDashboard.module.css";
+
 const OrderDashboard = () => {
   const [sortOrder, setSortOrder] = useState<SortState>({
     field: "oid",
@@ -36,17 +38,21 @@ const OrderDashboard = () => {
     );
 
   return (
-    <div className="container mx-auto p-4 ">
+    <div className="container mx-auto p-4">
       <Card className="w-full border-2 border-black rounded-md">
-        <CardContent>
-          <SortControl sortState={sortOrder} setSortState={setSortOrder} />
-          <FilterControl
-            filterState={filterOrder}
-            updateFilterState={(filterState: FilterState) =>
-              setFilterOrder(filterState)
-            }
-          />
-          <OrderTable orders={orders ?? []} />
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <div className="min-w-max">
+              <SortControl sortState={sortOrder} setSortState={setSortOrder} />
+              <FilterControl
+                filterState={filterOrder}
+                updateFilterState={(filterState: FilterState) =>
+                  setFilterOrder(filterState)
+                }
+              />
+              <OrderTable orders={orders ?? []} />
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

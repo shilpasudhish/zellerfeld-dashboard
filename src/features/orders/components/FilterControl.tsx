@@ -7,6 +7,7 @@ import { ModelDesigner } from "../../../types/enums/ModelDesignerEnum";
 import { OrderType } from "../../../types/enums/OrderTypeEnum";
 import type { FilterState } from "../../../types/FilterState";
 import { useEffect, useState } from "react";
+import { columns } from "./SortControl";
 
 type FilterControlProps = {
   filterState: FilterState;
@@ -45,19 +46,19 @@ const FilterInput = ({
   onClear,
   basis = "basis-[11.5%]",
 }: any) => (
-  <div
-    className={`flex flex-col items-start justify-start ${basis} min-w-[120px]`}
-  >
-    <div className="w-full">
+  <div className={`flex flex-col ${basis} min-w-[120px]`}>
+    <div className="w-full h-full border border-gray-300 rounded-md flex flex-col">
       <Input
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full"
+        className="w-full p-2"
       />
-      <Button variant={"ghost"} onClick={onClear}>
-        Clear
-      </Button>
+      <div className="mt-auto flex justify-end">
+        <Button variant="ghost" onClick={onClear}>
+          Clear
+        </Button>
+      </div>
     </div>
   </div>
 );
@@ -72,10 +73,10 @@ const FilterToggleGroup = ({
   type = "multiple",
 }: any) => (
   <div className={`flex flex-col items-start ${basis}`}>
-    <div className="w-full">
+    <div className="w-full border border-gray-300 rounded-md">
       <div className="h-32 overflow-y-auto w-full">
         <ToggleGroup
-          className="grid"
+          className="grid gap-1"
           type={type}
           value={value}
           onValueChange={onValueChange}
@@ -87,13 +88,13 @@ const FilterToggleGroup = ({
           ))}
         </ToggleGroup>
       </div>
-      <div className="flex gap-2 mt-2">
+      <div className="flex justify-between mt-2">
         {selectAll && (
-          <Button variant={"ghost"} onClick={selectAll}>
+          <Button variant="ghost" onClick={selectAll}>
             Select All
           </Button>
         )}
-        <Button variant={"ghost"} onClick={onClear}>
+        <Button variant="ghost" onClick={onClear}>
           Clear
         </Button>
       </div>
@@ -135,13 +136,13 @@ const FilterControl = ({
 
   return (
     <div className="my-2">
-      <div className="flex gap-x-2 px-4 min-w-[960px]">
+      <div className="flex gap-x-2 px-4">
         <FilterInput
           placeholder="Order ID"
           value={orderId}
           onChange={handleSearchChange(setOrderId)}
           onClear={() => setOrderId("")}
-          basis="basis-[11.5%] min-w-[120px]"
+          basis={columns[0].basis}
         />
         <FilterToggleGroup
           value={status}
@@ -151,7 +152,7 @@ const FilterControl = ({
           selectAll={() =>
             setStatus(Object.keys(orderStatusLabels) as OrderStatus[])
           }
-          basis="basis-[19.5%] min-w-[200px]"
+          basis={columns[1].basis}
         />
         <FilterToggleGroup
           value={type}
@@ -162,7 +163,7 @@ const FilterControl = ({
           }, {} as Record<OrderType, string>)}
           onClear={() => setType([])}
           selectAll={() => setType(Object.keys(OrderType) as OrderType[])}
-          basis="basis-[11.5%] min-w-[120px]"
+          basis={columns[2].basis}
         />
         <FilterToggleGroup
           value={lock}
@@ -172,14 +173,14 @@ const FilterControl = ({
           selectAll={() =>
             setLock(Object.keys(lockReasonLabels) as LockReason[])
           }
-          basis="basis-[11.5%] min-w-[120px]"
+          basis={columns[3].basis}
         />
         <FilterInput
           placeholder="Customer Name"
           value={customer}
           onChange={handleSearchChange(setCustomer)}
           onClear={() => setCustomer("")}
-          basis="basis-[11.5%] min-w-[120px]"
+          basis={columns[4].basis}
         />
         <FilterToggleGroup
           value={daysSinceOrder}
@@ -191,7 +192,7 @@ const FilterControl = ({
               Object.keys({ "5": "<5", "15": "<15", "30": "<30", "60": "<60" })
             )
           }
-          basis="basis-[11.5%] min-w-[120px]"
+          basis={columns[5].basis}
         />
         <FilterToggleGroup
           value={model}
@@ -201,7 +202,7 @@ const FilterControl = ({
           selectAll={() =>
             setModel(Object.keys(designerLabels) as ModelDesigner[])
           }
-          basis="basis-[11.5%] min-w-[120px]"
+          basis={columns[6].basis}
         />
         <FilterToggleGroup
           value={designer}
@@ -211,10 +212,11 @@ const FilterControl = ({
           selectAll={() =>
             setDesigner(Object.keys(designerLabels) as ModelDesigner[])
           }
-          basis="basis-[11.5%] min-w-[120px]"
+          basis={columns[7].basis}
         />
       </div>
     </div>
   );
 };
+
 export default FilterControl;

@@ -7,6 +7,7 @@ import { ModelDesigner } from "@/types/enums/ModelDesignerEnum";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { columns } from "./SortControl"; // Import columns from SortControl
 
 interface OrderTableProps {
   orders: Order[];
@@ -65,31 +66,15 @@ const getDesignerLabel = (designer?: ModelDesigner): string => {
   }
 };
 
-// Define column metadata
-const columns = [
-  { key: "oid", label: "Order ID", basis: "basis-[11.5%] min-w-[120px]" },
-  { key: "status", label: "Status", basis: "basis-[19.5%] min-w-[200px]" },
-  { key: "type", label: "Type", basis: "basis-[11.5%] min-w-[100px]" },
-  { key: "lock", label: "Lock", basis: "basis-[11.5%] min-w-[120px]" },
-  { key: "customer", label: "Customer", basis: "basis-[11.5%] min-w-[120px]" },
-  {
-    key: "daysSinceOrder",
-    label: "Days Since Order",
-    basis: "basis-[11.5%] min-w-[140px]",
-  },
-  { key: "model", label: "Model", basis: "basis-[11.5%] min-w-[120px]" },
-  { key: "designer", label: "Designer", basis: "basis-[11.5%] min-w-[140px]" },
-];
-
-const renderCellContent = (order: Order, columnKey: string) => {
-  switch (columnKey) {
+const renderCellContent = (order: Order, columnField: string) => {
+  switch (columnField) {
     case "oid":
       return order.oid;
     case "status":
       return (
         <div className="h-12 bg-gray-100 shadow-sm flex overflow-hidden text-[11px] sm:text-sm">
-          <div className="w-[35%] flex items-center justify-center p-2 text-center border-r border-white">
-            <div className="text-sm leading-tight break-words whitespace-normal">
+          <div className="w-[35%] flex items-center justify-center p-1 sm:p-2 text-center border-r border-white">
+            <div className="text-[11px] sm:text-sm leading-tight break-words whitespace-normal">
               {getOrderStatusLabel(order.status)}
             </div>
           </div>
@@ -140,70 +125,70 @@ const OrderTable = memo(({ orders }: OrderTableProps) => {
   const handleToggle = (oid: string) => {
     setExpandedOid((prev) => (prev === oid ? null : oid));
   };
-  return (
-    <div className="w-full overflow-x-auto relative after:content-[''] after:absolute after:right-0 after:top-0 after:bottom-0 after:w-4 after:bg-gradient-to-l after:from-white after:to-transparent">
-      <Table className="min-w-[800px] w-full">
-        <TableBody>
-          {orders.map((order) => {
-            const isExpanded = expandedOid === String(order.oid);
 
-            return (
-              <TableRow
-                key={order.oid}
-                className="flex gap-x-2 px-4 border-t border-b border-gray-400"
-              >
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.key}
-                    className={cn(`bg-white px-1 sm:px-2 py-2 ${column.basis}`)}
-                  >
-                    {column.key === "status" ? (
-                      renderCellContent(order, column.key)
-                    ) : column.key === "oid" ? (
+  return (
+    <Table className="w-full">
+      <TableBody>
+        {orders.map((order) => {
+          const isExpanded = expandedOid === String(order.oid);
+
+          return (
+            <TableRow
+              key={order.oid}
+              className="flex gap-x-2 px-4 border-t border-b border-gray-400"
+            >
+              {columns.map((column) => (
+                <TableCell
+                  key={column.field}
+                  className={cn(
+                    `bg-white px-2 py-1 sm:py-2 ${column.basis}`,
+                    column.field === "oid" && isExpanded && "bg-blue-200"
+                  )}
+                >
+                  {column.field === "status" ? (
+                    renderCellContent(order, column.field)
+                  ) : column.field === "oid" ? (
+                    <div
+                      className={cn(
+                        "h-12 shadow-sm flex items-center justify-between p-2 text-sm sm:text-base",
+                        isExpanded && "bg-blue-200"
+                      )}
+                    >
+                      <span className="font-semibold text-lg">{order.oid}</span>
+                      <button
+                        onClick={() => handleToggle(String(order.oid))}
+                        className="ml-2 text-gray-600 hover:text-black"
+                      >
+                        {isExpanded ? (
+                          <ChevronDown className="w-4 h-4" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="h-12 bg-gray-100 shadow-sm flex items-center justify-center p-2 text-center text-[11px] sm:text-sm">
                       <div
                         className={cn(
-                          "h-12 shadow-sm flex items-center justify-between p-2 text-sm sm:text-base",
-                          isExpanded ? "bg-blue-200" : "bg-gray-100"
+                          "text-[11px] sm:text-sm break-words leading-tight",
+                          ["oid", "type", "daysSinceOrder"].includes(
+                            column.field
+                          )
+                            ? "font-semibold text-lg sm:text-lg"
+                            : ""
                         )}
                       >
-                        <span className="font-semibold text-lg">
-                          {order.oid}
-                        </span>
-                        <button
-                          onClick={() => handleToggle(String(order.oid))}
-                          className="ml-2 text-gray-600 hover:text-black"
-                        >
-                          {isExpanded ? (
-                            <ChevronDown className="w-4 h-4" />
-                          ) : (
-                            <ChevronRight className="w-4 h-4" />
-                          )}
-                        </button>
+                        {renderCellContent(order, column.field)}
                       </div>
-                    ) : (
-                      <div className="h-12 bg-gray-100 shadow-sm flex items-center justify-center p-2 text-center text-sm sm:text-base sm:p-3">
-                        <div
-                          className={cn(
-                            "text-sm break-words leading-tight",
-                            ["oid", "type", "daysSinceOrder"].includes(
-                              column.key
-                            )
-                              ? "font-semibold text-lg"
-                              : ""
-                          )}
-                        >
-                          {renderCellContent(order, column.key)}
-                        </div>
-                      </div>
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+                    </div>
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
   );
 });
 
