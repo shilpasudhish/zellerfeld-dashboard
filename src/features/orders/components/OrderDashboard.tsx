@@ -19,7 +19,7 @@ const OrderDashboard = () => {
     customer: "",
     designer: [],
     model: [],
-    daysSinceOrder: "",
+    daysSinceOrder: [],
   });
 
   const {

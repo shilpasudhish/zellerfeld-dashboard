@@ -79,15 +79,16 @@ export class OrderService {
       );
     }
 
-    if (Number(daysSinceOrder) > 0) {
-      filteredOrders = filteredOrders.filter(
-        (order) => order.daysSinceOrder <= Number(daysSinceOrder)
+    if (daysSinceOrder.length > 0) {
+      const thresholds = daysSinceOrder.map(Number);
+      filteredOrders = filteredOrders.filter((order) =>
+        thresholds.some((threshold) => order.daysSinceOrder < threshold)
       );
     }
+
     return [...filteredOrders].sort((a, b) => {
       let valueA = a[field];
       let valueB = b[field];
-      //Handle status field special case
 
       // Handle lock field special case
       if (field === "lock") {
