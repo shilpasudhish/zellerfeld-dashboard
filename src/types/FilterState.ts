@@ -11,5 +11,6 @@ export interface FilterState {
   customer: string;
   model: ModelDesigner[];
   designer: ModelDesigner[];
-  daysSinceOrder: string[];
+  // daysSinceOrder: string[];
+  daysSinceOrder: string;
 }

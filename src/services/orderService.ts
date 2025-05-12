@@ -79,10 +79,15 @@ export class OrderService {
       );
     }
 
-    if (daysSinceOrder.length > 0) {
-      const thresholds = daysSinceOrder.map(Number);
-      filteredOrders = filteredOrders.filter((order) =>
-        thresholds.some((threshold) => order.daysSinceOrder < threshold)
+    // if (daysSinceOrder.length > 0) {
+    //   const thresholds = daysSinceOrder.map(Number);
+    //   filteredOrders = filteredOrders.filter((order) =>
+    //     thresholds.some((threshold) => order.daysSinceOrder < threshold)
+    //   );
+    // }
+    if (Number(daysSinceOrder) > 0) {
+      filteredOrders = filteredOrders.filter(
+        (order) => order.daysSinceOrder <= Number(daysSinceOrder)
       );
     }
 

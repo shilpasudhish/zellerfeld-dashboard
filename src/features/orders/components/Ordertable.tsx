@@ -140,7 +140,8 @@ const OrderTable = ({ orders }: OrderTableProps) => {
                 <TableCell
                   key={column.field}
                   className={cn(
-                    `bg-white px-2 py-1 sm:py-2 ${column.basis}`,
+                    `px-2 py-1 sm:py-2 ${column.basis}`,
+
                     column.field === "oid" && isExpanded && "bg-blue-200"
                   )}
                 >
@@ -149,7 +150,7 @@ const OrderTable = ({ orders }: OrderTableProps) => {
                   ) : column.field === "oid" ? (
                     <div
                       className={cn(
-                        "h-12 shadow-sm flex items-center justify-between p-2 text-sm sm:text-base",
+                        "h-12 shadow-sm flex items-center justify-between p-2 text-sm sm:text-base  bg-gray-100",
                         isExpanded && "bg-blue-200"
                       )}
                     >

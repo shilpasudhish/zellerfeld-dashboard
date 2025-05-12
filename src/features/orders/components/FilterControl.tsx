@@ -9,6 +9,7 @@ import { FilterState } from "../../../types/FilterState";
 import { useEffect, useState } from "react";
 import { columns } from "./SortControl";
 import { cn } from "@/lib/utils";
+import { useDebouncedSearch } from "@/hooks/useDebouncedSearch";
 
 type FilterControlProps = {
   filterState: FilterState;
@@ -137,22 +138,33 @@ const FilterControl = ({
     filterState.designer
   );
   const [model, setModel] = useState<ModelDesigner[]>(filterState.model);
-  const [daysSinceOrder, setDaysSinceOrder] = useState<string[]>(
-    filterState.daysSinceOrder || []
+  const [daysSinceOrder, setDaysSinceOrder] = useState<string>(
+    filterState.daysSinceOrder
   );
+  const debouncedOrderId = useDebouncedSearch(orderId, 500);
+  const debouncedCustomer = useDebouncedSearch(customer, 500);
 
   useEffect(() => {
     updateFilterState({
       status,
-      orderId,
-      customer,
+      orderId: debouncedOrderId,
+      customer: debouncedCustomer,
       type,
       lock,
       designer,
       model,
       daysSinceOrder,
     });
-  }, [status, orderId, customer, type, lock, designer, model, daysSinceOrder]);
+  }, [
+    status,
+    debouncedOrderId,
+    debouncedCustomer,
+    type,
+    lock,
+    designer,
+    model,
+    daysSinceOrder,
+  ]);
 
   const handleSearchChange = (setter: any) => (value: string) => setter(value);
 
@@ -208,13 +220,14 @@ const FilterControl = ({
           value={daysSinceOrder}
           onValueChange={setDaysSinceOrder}
           labelMap={{ "5": "<5", "15": "<15", "30": "<30", "60": "<60" }}
-          onClear={() => setDaysSinceOrder([])}
-          selectAll={() =>
-            setDaysSinceOrder(
-              Object.keys({ "5": "<5", "15": "<15", "30": "<30", "60": "<60" })
-            )
-          }
+          onClear={() => setDaysSinceOrder("")}
+          // selectAll={() =>
+          //   setDaysSinceOrder(
+          //     Object.keys({ "5": "<5", "15": "<15", "30": "<30", "60": "<60" })
+          //   )
+          // }
           basis={columns[5].basis}
+          type="single"
         />
         <FilterToggleGroup
           value={model}
