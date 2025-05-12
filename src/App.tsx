@@ -10,7 +10,7 @@ function App() {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <div className="min-h-screen bg-white text-black">
-          <h1 className="text-xl font-semibold p-4 text-left">
+          <h1 className="text-xl font-semibold p-4 text-center bg-gray-800 text-white">
             Zellerfeld Order Dashboard
           </h1>
           <OrderDashboard />

@@ -49,18 +49,18 @@ const FilterInput = ({
   basis = "basis-[11.5%]",
 }: any) => (
   <div className={`flex flex-col ${basis} min-w-[120px]`}>
-    <div className="w-full h-full border border-gray-500 rounded-md flex flex-col">
+    <div className="flex flex-col w-full h-full border border-gray-300 rounded-lg overflow-hidden shadow-sm">
       <Input
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full p-2 border-0 border-b border-gray-500 rounded-none focus:outline-none focus:ring-0 focus-visible:ring-0"
+        className="w-full px-3 py-2 border-0 rounded-none text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
       />
-      <div className="mt-auto flex justify-end p-4">
+      <div className="mt-auto flex justify-end px-3 py-2 bg-gray-50 border-t border-gray-200">
         <Button
           variant="ghost"
           size="sm"
-          className="rounded-full px-3 py-1 text-sm"
+          className="rounded-full text-sm px-3 py-1"
           onClick={onClear}
         >
           Clear
@@ -80,10 +80,10 @@ const FilterToggleGroup = ({
   type = "multiple",
 }: any) => (
   <div className={`flex flex-col items-start ${basis}`}>
-    <div className="w-full border border-gray-500 rounded-md">
+    <div className="w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm">
       <div className="h-32 overflow-y-auto w-full pr-1">
         <ToggleGroup
-          className="flex flex-col gap-1 w-[calc(100%-4px)] pr-1 pl-1"
+          className="flex flex-col gap-[1px] w-full"
           type={type}
           value={value}
           onValueChange={onValueChange}
@@ -93,7 +93,10 @@ const FilterToggleGroup = ({
               key={key}
               value={key}
               className={cn(
-                "block w-full text-left p-2 text-sm font-normal border-b border-gray-500 last:border-b-0 first:rounded-none last:rounded-none transition-colors duration-200 data-[state=on]:bg-blue-200 data-[state=on]:text-blue-900 data-[state=off]:bg-white data-[state=off]:hover:bg-gray-100"
+                "block w-full text-left px-3 py-2 text-sm font-normal border-b border-gray-200 last:border-b-0",
+                "transition-colors duration-200 rounded-none",
+                "data-[state=on]:bg-gray-300 data-[state=on]:text-gray-900",
+                "data-[state=off]:bg-white data-[state=off]:hover:bg-gray-100"
               )}
             >
               {labelMap[key]}
@@ -101,7 +104,7 @@ const FilterToggleGroup = ({
           ))}
         </ToggleGroup>
       </div>
-      <div className="flex justify-between mt-2 px-2 py-4 gap-2">
+      <div className="flex items-center justify-between gap-2 px-3 py-2 border-t border-gray-200 bg-gray-50">
         {selectAll && (
           <Button
             variant="ghost"
@@ -141,8 +144,8 @@ const FilterControl = ({
   const [daysSinceOrder, setDaysSinceOrder] = useState<string>(
     filterState.daysSinceOrder
   );
-  const debouncedOrderId = useDebouncedSearch(orderId, 500);
-  const debouncedCustomer = useDebouncedSearch(customer, 500);
+  const debouncedOrderId = useDebouncedSearch(orderId, 1000);
+  const debouncedCustomer = useDebouncedSearch(customer, 1000);
 
   useEffect(() => {
     updateFilterState({

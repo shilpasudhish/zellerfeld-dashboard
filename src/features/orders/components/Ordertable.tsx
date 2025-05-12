@@ -128,65 +128,80 @@ const OrderTable = ({ orders }: OrderTableProps) => {
   return (
     <Table className="w-full">
       <TableBody>
-        {orders.map((order) => {
-          const isExpanded = expandedOid === String(order.oid);
+        {orders.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={columns.length}>
+              <div className="w-full flex justify-center items-center py-10 text-gray-500 text-base sm:text-lg font-medium">
+                No orders found
+              </div>
+            </TableCell>
+          </TableRow>
+        ) : (
+          orders.map((order, idx) => {
+            const isExpanded = expandedOid === String(order.oid);
 
-          return (
-            <TableRow
-              key={order.oid}
-              className="flex gap-x-2 px-4 border-t border-b border-gray-400"
-            >
-              {columns.map((column) => (
-                <TableCell
-                  key={column.field}
-                  className={cn(
-                    `px-2 py-1 sm:py-2 ${column.basis}`,
-
-                    column.field === "oid" && isExpanded && "bg-blue-200"
-                  )}
-                >
-                  {column.field === "status" ? (
-                    renderCellContent(order, column.field)
-                  ) : column.field === "oid" ? (
-                    <div
-                      className={cn(
-                        "h-12 shadow-sm flex items-center justify-between p-2 text-sm sm:text-base  bg-gray-100",
-                        isExpanded && "bg-blue-200"
-                      )}
-                    >
-                      <span className="font-semibold text-lg">{order.oid}</span>
-                      <button
-                        onClick={() => handleToggle(String(order.oid))}
-                        className="ml-2 text-gray-600 hover:text-black"
-                      >
-                        {isExpanded ? (
-                          <ChevronDown className="w-4 h-4" />
-                        ) : (
-                          <ChevronRight className="w-4 h-4" />
-                        )}
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="h-12 bg-gray-100 shadow-sm flex items-center justify-center p-2 text-center text-[11px] sm:text-sm">
+            return (
+              <TableRow
+                key={order.oid}
+                className={cn(
+                  "flex gap-x-2 px-4 border-t border-b border-gray-300",
+                  "hover:bg-gray-100",
+                  idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                )}
+              >
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.field}
+                    className={cn(
+                      `px-2 py-1 sm:py-2 ${column.basis}`,
+                      column.field === "oid" && isExpanded && "bg-blue-200"
+                    )}
+                  >
+                    {column.field === "status" ? (
+                      renderCellContent(order, column.field)
+                    ) : column.field === "oid" ? (
                       <div
                         className={cn(
-                          "text-[11px] sm:text-sm break-words leading-tight",
-                          ["oid", "type", "daysSinceOrder"].includes(
-                            column.field
-                          )
-                            ? "font-semibold text-lg sm:text-lg"
-                            : ""
+                          "h-12 shadow-sm flex items-center justify-between p-2 text-sm sm:text-base bg-gray-100",
+                          isExpanded && "bg-blue-200"
                         )}
                       >
-                        {renderCellContent(order, column.field)}
+                        <span className="font-semibold text-lg">
+                          {order.oid}
+                        </span>
+                        <button
+                          onClick={() => handleToggle(String(order.oid))}
+                          className="ml-2 text-gray-600 hover:text-black"
+                        >
+                          {isExpanded ? (
+                            <ChevronDown className="w-4 h-4" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4" />
+                          )}
+                        </button>
                       </div>
-                    </div>
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          );
-        })}
+                    ) : (
+                      <div className="h-12 bg-gray-100 shadow-sm flex items-center justify-center p-2 text-center text-[11px] sm:text-sm">
+                        <div
+                          className={cn(
+                            "text-[11px] sm:text-sm break-words leading-tight",
+                            ["oid", "type", "daysSinceOrder"].includes(
+                              column.field
+                            )
+                              ? "font-semibold text-lg sm:text-lg"
+                              : ""
+                          )}
+                        >
+                          {renderCellContent(order, column.field)}
+                        </div>
+                      </div>
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            );
+          })
+        )}
       </TableBody>
     </Table>
   );

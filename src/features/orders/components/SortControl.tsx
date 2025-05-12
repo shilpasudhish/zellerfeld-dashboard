@@ -42,7 +42,7 @@ const SortControl = ({ sortState, setSortState }: SortControlProps) => {
   };
 
   return (
-    <div className="flex gap-x-2 px-4">
+    <div className="flex gap-x-2 px-4 my-2">
       {columns.map(({ label, field, basis }) => {
         const isActive = sortState.field === field;
         const direction = sortState.direction;
@@ -50,15 +50,15 @@ const SortControl = ({ sortState, setSortState }: SortControlProps) => {
         return (
           <div
             key={field}
-            className={`flex items-center justify-between text-white font-bold text-[15px] text-center bg-black shadow-sm border border-gray-700 py-2 px-2 ${basis}`}
+            className={`flex items-center justify-between text-white font-bold text-[15px] text-center bg-black shadow-sm border border-gray-700 py-2 px-3 rounded-md hover:bg-gray-800 transition duration-200 ${basis}`}
           >
             <span className="mr-1 truncate">{label}</span>
             <Button
               variant="ghost"
               size="icon"
-              className={`h-8 w-8 p-0 text-white ${
+              className={`h-8 w-8 p-0 text-white transition-opacity duration-200 ${
                 isActive ? "opacity-100" : "opacity-50"
-              }`}
+              } hover:opacity-100`}
               onClick={() => handleSort(field)}
             >
               {isActive && direction === "asc" ? (
