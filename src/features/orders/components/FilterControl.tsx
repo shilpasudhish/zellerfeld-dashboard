@@ -196,6 +196,17 @@ const FilterControl = ({
     model,
     daysSinceOrder,
   ]);
+  // Effect hook to set initial filter state from props - presets
+  useEffect(() => {
+    setStatus(filterState.status);
+    setOrderId(filterState.orderId);
+    setCustomer(filterState.customer);
+    setType(filterState.type);
+    setLock(filterState.lock);
+    setDesigner(filterState.designer);
+    setModel(filterState.model);
+    setDaysSinceOrder(filterState.daysSinceOrder);
+  }, [filterState]);
   // Search input change handler
 
   const handleSearchChange = (setter: any) => (value: string) => setter(value);
