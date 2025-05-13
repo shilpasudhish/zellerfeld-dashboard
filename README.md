@@ -21,12 +21,12 @@ An interactive, filterable, and sortable dashboard for managing Zellerfeld order
 
 ## 🛠️ Tech Stack
 
-  **React 18** + **TypeScript**
-  **Tailwind CSS** + **shadcn/ui**
-  **Redux Toolkit** for global state
-  **React Query** for async data
-  **Vite** for fast dev/build
-  **Jest** + **React Testing Library** for unit testing
+  - React 18** + **TypeScript**
+  - Tailwind CSS** + **shadcn/ui**
+  - Redux Toolkit** for global state
+  - React Query** for async data
+  - Vite for fast dev/build
+  - Jest + React Testing Library for unit testing
 ---
 
 ## 📁 Folder Structure
