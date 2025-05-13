@@ -7,7 +7,7 @@ import { RootState } from "@/state/store";
 import { saveCurrentConfig } from "@/state/saved-configs/SavedConfigSlice";
 import { BounceLoading } from "respinner";
 import { Card, CardContent } from "@/components/ui/card";
-import OrderTable from "./OrderTable";
+import TableWrapper from "./TableWrapper";
 import SortControl from "./SortControl";
 import FilterControl from "./FilterControl";
 import ConfigPresets from "./ConfigPresets";
@@ -73,7 +73,7 @@ const OrderDashboard = () => {
                       setFilterOrder(filterState)
                     }
                   />
-                  <OrderTable orders={data} />
+                  <TableWrapper orders={data} />
                 </>
               )}
             </div>

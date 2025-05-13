@@ -122,8 +122,7 @@ const renderCellContent = (order: Order, columnField: string) => {
       return "";
   }
 };
-
-const OrderTable = ({ orders }: OrderTableProps) => {
+const TableWrapper = ({ orders }: OrderTableProps) => {
   const [expandedOid, setExpandedOid] = useState<string | null>(null);
 
   const handleToggle = (oid: string) => {
@@ -212,4 +211,4 @@ const OrderTable = ({ orders }: OrderTableProps) => {
   );
 };
 
-export default OrderTable;
+export default TableWrapper;
