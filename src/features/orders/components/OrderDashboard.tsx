@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SortState } from "@/types/SortState";
 import { FilterState } from "@/types/FilterState";
@@ -36,9 +36,13 @@ const OrderDashboard = () => {
     dispatch(saveCurrentConfig({ filters: filterOrder, sort: sortOrder }));
   }, [sortOrder, filterOrder, dispatch]);
   // Query for fetching orders with sorting and filtering applied
+  const queryKey = useMemo(
+    () => ["todos", sortOrder, filterOrder],
+    [sortOrder, filterOrder]
+  );
 
   const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ["todos", sortOrder, filterOrder],
+    queryKey,
     queryFn: () => orderService.getOrders(sortOrder, filterOrder),
   });
 
