@@ -21,10 +21,10 @@ An interactive, filterable, and sortable dashboard for managing Zellerfeld order
 
 ## 🛠️ Tech Stack
 
-  - React 18** + **TypeScript**
-  - Tailwind CSS** + **shadcn/ui**
-  - Redux Toolkit** for global state
-  - React Query** for async data
+  - React 18 + TypeScript
+  - Tailwind CSS + shadcn/ui
+  - Redux Toolkit for global state
+  - React Query for async data
   - Vite for fast dev/build
   - Jest + React Testing Library for unit testing
 ---
@@ -123,31 +123,32 @@ Data is loaded from `data.ts` using a simulated async function in `orderService.
 ### ↕️ Sorting
 
 - Click any column header to toggle ascending/descending order.
-- Sort config stored in Redux for persistence within session.
+- Sort the config stored in Redux for persistence within the session.
 
 ### 💾 Presets
 
-- Two built-in presets available.
-- Users can save the current configuration via UI.
+- Two built-in presets are available.
+- Users can save the current configuration via the UI.
 - **Note:** Custom presets are stored in app state but not persisted to local storage.
 
 ## 💻 Screenshots
 
-> Replace with actual links/images in markdown format:
+> 
+https://github.com/user-attachments/assets/ed5f2493-5b5d-4431-a31a-92f403863f11
 
 ---
 
 ## 🌐 Deployment
 
 Deployed via **Vercel**  
-🔗 Live Demo
+🔗 https://zellerfeld-dashboard.vercel.app/
 
 ---
 
 ## ⚠️ Known Limitations
 
 - Custom preset saving is **not persisted** to localStorage (can be added with minimal logic).
-- Currently no pagination or infinite scroll (not required by challenge).
+- Currently, there is no pagination or infinite scroll (not required by the challenge).
 ---
 
 ## 🧠 Learning Focus
@@ -157,7 +158,7 @@ This project highlights:
 - Component-driven architecture
 - Type-safe state management
 - Real-world UI patterns: filtering, sorting, saving configs
-- Performance optimization
+- Performance optimisation
 - Clean and testable code
 ---
 
