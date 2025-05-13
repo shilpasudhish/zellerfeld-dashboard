@@ -9,13 +9,13 @@ An interactive, filterable, and sortable dashboard for managing Zellerfeld order
 
 ## 🚀 Features
 
-🔍 **Filterable UI** for all major fields (Status, Lock Reason, Type, etc.)
-📊 **Sort toggles** (asc/desc) on each sortable column
-⚡️ Fast performance with **React Query** for data fetching
-🎛️ **Preset saving system** with 2 built-in presets
-💡 Debounced search for performance optimization
-♿️ Responsive + accessible layout using **shadcn/ui**
-✅ Unit tested with **Jest** and **Testing Library**
+- 🔍 **Filterable UI** for all major fields (Status, Lock Reason, Type, etc.)
+- 📊 **Sort toggles** (asc/desc) on each sortable column
+-⚡️ Fast performance with **React Query** for data fetching
+- 🎛️ **Preset saving system** with 2 built-in presets
+-💡 Debounced search for performance optimization
+- ♿️ Responsive + accessible layout using **shadcn/ui**
+- ✅ Unit tested with **Jest** and **Testing Library**
 
 ---
 
