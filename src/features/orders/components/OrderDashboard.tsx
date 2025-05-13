@@ -7,7 +7,7 @@ import { RootState } from "@/state/store";
 import { saveCurrentConfig } from "@/state/saved-configs/SavedConfigSlice";
 import { BounceLoading } from "respinner";
 import { Card, CardContent } from "@/components/ui/card";
-import OrderTable from "../components/OrderTable";
+import OrderTable from "./OrderTable";
 import SortControl from "./SortControl";
 import FilterControl from "./FilterControl";
 import ConfigPresets from "./ConfigPresets";
@@ -19,20 +19,23 @@ const OrderDashboard = () => {
     (state: RootState) => state.savedConfigs
   );
   const dispatch = useDispatch();
-
+  // Local state to hold sort and filter configurations
   const [sortOrder, setSortOrder] = useState<SortState>(currentConfig.sort);
   const [filterOrder, setFilterOrder] = useState<FilterState>(
     currentConfig.filters
   );
+  // Update local state when the current config changes
 
   useEffect(() => {
     setSortOrder(currentConfig.sort);
     setFilterOrder(currentConfig.filters);
   }, [currentConfig]);
+  // Save updated config to the store
 
   useEffect(() => {
     dispatch(saveCurrentConfig({ filters: filterOrder, sort: sortOrder }));
   }, [sortOrder, filterOrder, dispatch]);
+  // Query for fetching orders with sorting and filtering applied
 
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ["todos", sortOrder, filterOrder],

@@ -27,12 +27,17 @@ import {
 import type { RootState } from "@/state/store";
 
 const ConfigPresets = () => {
+  // Accessing saved configs and current config from Redux store using selectors
+
   const { savedConfigs, currentConfig } = useSelector(
     (state: RootState) => state.savedConfigs
   );
+  // Local state to manage the config name input and dialog visibility
+
   const [configName, setConfigName] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useDispatch();
+  // Function to handle saving the current config
 
   const handleConfigSave = () => {
     const config = {
@@ -55,6 +60,7 @@ const ConfigPresets = () => {
           <DropdownMenuLabel className="px-4 py-2 text-lg font-semibold text-gray-800">
             Saved Configs
           </DropdownMenuLabel>
+          {/* Mapping over saved configs and displaying each one */}
           <DropdownMenuSeparator />
           {savedConfigs.map((config) => (
             <DropdownMenuItem

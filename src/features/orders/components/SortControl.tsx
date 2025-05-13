@@ -31,6 +31,7 @@ type SortControlProps = {
   sortState: SortState;
   setSortState: (sortState: SortState) => void;
 };
+// SortControl component to manage and trigger sorting based on the column clicked
 
 const SortControl = ({ sortState, setSortState }: SortControlProps) => {
   const handleSort = (field: keyof Order) => {
@@ -52,7 +53,7 @@ const SortControl = ({ sortState, setSortState }: SortControlProps) => {
             key={field}
             className={`flex items-center justify-between text-white font-bold text-[15px] text-center bg-black shadow-sm border border-gray-700 py-2 px-3 rounded-md hover:bg-gray-800 transition duration-200 ${basis}`}
           >
-            <span className="mr-1 truncate">{label}</span>
+            <span className="mr-1 whitespace-normal break-words">{label}</span>
             <Button
               variant="ghost"
               size="icon"

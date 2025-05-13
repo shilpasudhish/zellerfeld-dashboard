@@ -41,6 +41,7 @@ const designerLabels = {
   [ModelDesigner.Nami]: "Nami",
 };
 
+// Filter input component for search fields with clear button
 const FilterInput = ({
   placeholder,
   value,
@@ -63,12 +64,14 @@ const FilterInput = ({
           className="rounded-full text-sm px-3 py-1"
           onClick={onClear}
         >
-          Clear
+          Clear Selection
         </Button>
       </div>
     </div>
   </div>
 );
+
+// Filter toggle group for different enum types (Order Status, Lock Reason, etc.)
 
 const FilterToggleGroup = ({
   value,
@@ -105,28 +108,43 @@ const FilterToggleGroup = ({
         </ToggleGroup>
       </div>
       <div className="flex items-center justify-between gap-2 px-3 py-2 border-t border-gray-200 bg-gray-50">
-        {selectAll && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="rounded-full px-3 py-1 text-sm"
-            onClick={selectAll}
-          >
-            Select All
-          </Button>
+        {selectAll ? (
+          <>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full px-3 py-1 text-sm"
+              onClick={selectAll}
+            >
+              Select all
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full px-3 py-1 text-sm"
+              onClick={onClear}
+            >
+              Clear
+            </Button>
+          </>
+        ) : (
+          <div className="ml-auto">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full px-3 py-1 text-sm"
+              onClick={onClear}
+            >
+              Clear
+            </Button>
+          </div>
         )}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="rounded-full px-3 py-1 text-sm"
-          onClick={onClear}
-        >
-          Clear
-        </Button>
       </div>
     </div>
   </div>
 );
+
+// Main filter control component managing multiple filters
 
 const FilterControl = ({
   filterState,
@@ -144,8 +162,11 @@ const FilterControl = ({
   const [daysSinceOrder, setDaysSinceOrder] = useState<string>(
     filterState.daysSinceOrder
   );
+  // Debounced search for orderId and customer
+
   const debouncedOrderId = useDebouncedSearch(orderId, 1000);
   const debouncedCustomer = useDebouncedSearch(customer, 1000);
+  // Effect hook to update filter state whenever a filter changes
 
   useEffect(() => {
     updateFilterState({
@@ -168,12 +189,14 @@ const FilterControl = ({
     model,
     daysSinceOrder,
   ]);
+  // Search input change handler
 
   const handleSearchChange = (setter: any) => (value: string) => setter(value);
 
   return (
     <div className="my-2 mb-10">
       <div className="flex gap-x-2 px-4">
+        {/* Each FilterInput and FilterToggleGroup component */}
         <FilterInput
           placeholder="Order ID"
           value={orderId}

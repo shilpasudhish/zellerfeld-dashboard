@@ -6,11 +6,13 @@ import { ModelDesigner } from "@/types/enums/ModelDesignerEnum";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { columns } from "./SortControl"; // Import columns from SortControl
+import { columns } from "./SortControl";
 
 interface OrderTableProps {
   orders: Order[];
 }
+
+// Utility function to return the label for the order status
 
 const getOrderStatusLabel = (status: OrderStatus | "" | undefined): string => {
   switch (status) {
@@ -30,6 +32,7 @@ const getOrderStatusLabel = (status: OrderStatus | "" | undefined): string => {
       return "";
   }
 };
+// Utility function to return the label for the lock reason
 
 const getLockReasonLabel = (
   lock: LockReason | null | "" | undefined
@@ -47,6 +50,7 @@ const getLockReasonLabel = (
       return "None";
   }
 };
+// Utility function to return the label for the designer
 
 const getDesignerLabel = (designer?: ModelDesigner): string => {
   switch (designer) {
@@ -64,6 +68,7 @@ const getDesignerLabel = (designer?: ModelDesigner): string => {
       return "";
   }
 };
+// Function to render the content of each table cell based on its column field
 
 const renderCellContent = (order: Order, columnField: string) => {
   switch (columnField) {
