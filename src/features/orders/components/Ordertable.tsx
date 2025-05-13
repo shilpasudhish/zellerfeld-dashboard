@@ -212,6 +212,4 @@ const OrderTable = ({ orders }: OrderTableProps) => {
   );
 };
 
-OrderTable.displayName = "OrderTable";
-
 export default OrderTable;
