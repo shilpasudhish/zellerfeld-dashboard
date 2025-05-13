@@ -49,7 +49,10 @@ const OrderDashboard = () => {
           <div className="overflow-x-auto">
             <div className="min-w-max">
               {isLoading && (
-                <div className="loader grid place-items-center h-full">
+                <div
+                  className="loader grid place-items-center h-full"
+                  data-testid="loading-spinner"
+                >
                   <BounceLoading gap={5} />
                 </div>
               )}

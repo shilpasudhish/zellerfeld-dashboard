@@ -63,6 +63,7 @@ const FilterInput = ({
           size="sm"
           className="rounded-full text-sm px-3 py-1"
           onClick={onClear}
+          disabled={!value}
         >
           Clear Selection
         </Button>
@@ -115,6 +116,10 @@ const FilterToggleGroup = ({
               size="sm"
               className="rounded-full px-3 py-1 text-sm"
               onClick={selectAll}
+              disabled={
+                Array.isArray(value) &&
+                value.length === Object.keys(labelMap).length
+              }
             >
               Select all
             </Button>
@@ -123,6 +128,7 @@ const FilterToggleGroup = ({
               size="sm"
               className="rounded-full px-3 py-1 text-sm"
               onClick={onClear}
+              disabled={Array.isArray(value) ? value.length === 0 : !value}
             >
               Clear
             </Button>
@@ -134,6 +140,7 @@ const FilterToggleGroup = ({
               size="sm"
               className="rounded-full px-3 py-1 text-sm"
               onClick={onClear}
+              disabled={Array.isArray(value) ? value.length === 0 : !value}
             >
               Clear
             </Button>

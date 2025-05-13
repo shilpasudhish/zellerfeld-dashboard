@@ -1,8 +1,8 @@
-import { dummyOrders } from "../assets/data.ts";
+import { dummyOrders } from "../assets/data";
 import type { Order } from "../types/order";
 import { OrderStatus } from "../types/enums/OrderStatusEnum";
-import { SortState } from "@/types/SortState.ts";
-import { FilterState } from "@/types/FilterState.ts";
+import { SortState } from "@/types/SortState";
+import { FilterState } from "@/types/FilterState";
 import { LockReason } from "@/types/enums/LockReasonEnum";
 
 const STATUS_PRECEDENCE: OrderStatus[] = [
